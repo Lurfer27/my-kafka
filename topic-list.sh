@@ -1,14 +1,32 @@
 #!/bin/bash
 
-#zookeeper=zookeeper:2181
-zookeeper=ckzdd01lv.yodel.net:2181,ckzdd02lv.yodel.net:2181,ckzdd03lv.yodel.net:2181
-#zookeeper=ckzsd01lv.yodel.net:2181,ckzsd02lv.yodel.net:2181,ckzsd03lv.yodel.net:2181
-#zookeeper=ckzud01lv.yodel.net:2181,ckzud02lv.yodel.net:2181,ckzud03lv.yodel.net:2181
-#zookeeper=ckzpd01lv.yodel.net:2181,ckzpd02lv.yodel.net:2181,ckzpd03lv.yodel.net:2181,ckzpd04lv.yodel.net:2181,ckzpd05lv.yodel.net:2181
+# Check argument count
+if [ $# -ne 1 ]
+then
+	echo "Usage: topic-list PROPERTIES_FILE"
+	exit 1
+fi
 
-echo $SHELL
+# Set variables via PROPERTIES_FILE if it exists
+if [ -f $1 ]
+then
+	source $1
+fi
+
+# Ensure zookeeper set
+if [ -z ${zookeeper} ]
+then
+	echo "Usage: topic-list PROPERTIES_FILE"
+	echo "zookeeper must be given"
+	exit 1
+fi
+
+echo $0 $1
+echo "zookeeper:" ${zookeeper}
 
 docker exec broker \
   kafka-topics \
     --list \
-    --zookeeper ${zookeeper}
+    --zookeeper ${zookeeper} > topic-list.log
+
+exit 0

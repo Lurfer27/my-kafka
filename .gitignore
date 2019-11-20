@@ -1,1 +1,6 @@
 *.log
+resources/application-LOCAL.properties
+resources/application-DEV.properties
+resources/application-SIT.properties
+resources/application-UAT.properties
+resources/application-PREP.properties
